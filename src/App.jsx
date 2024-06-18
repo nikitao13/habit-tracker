@@ -8,7 +8,7 @@ import MainFooter from "./components/footer/MainFooter";
 
 function App() {
   return (
-    <div className="wrapper w-full h-[100vh] bg-white overflow-hidden sm:overflow-auto">
+    <div className="wrapper w-full h-[100vh] bg-white overflow-auto">
       <div className="app-container max-w-[1600px] bg-white h-auto w-full mx-auto">
         <MainHeader />
         <BuildHealthy />

@@ -1,9 +1,9 @@
 function Benefits() {
   return (
     <section className="select-none antialiased flex items-center w-full h-[30vh] sm:h-[50vh] mx-auto pl-2 bg-gray-100">
-      <div className="flex justify-center items-center max-w-[1600px] w-[100%] gap-18 h-full px-4 mx-auto">
-        <div className="flex flex-col w-3/4 text-left">
-          <h1 className="underline decoration-purple-hbt text-xl sm:text-3xl font-bold tracking-tight mb-2 sm:mb-4">
+      <div className="flex justify-center items-center max-w-[1600px] w-[100%] gap-18 h-full px-1 sm:px-4 mx-auto">
+        <div className="flex flex-col w-full sm:w-3/4 text-left">
+          <h1 className="underline decoration-purple-hbt text-lg sm:text-3xl font-bold tracking-tight mb-2 sm:mb-4">
             Why track habits?
           </h1>
           <ul className="flex flex-col gap-3 sm:gap-4 tracking-wide text-xs sm:text-lg">
@@ -30,7 +30,7 @@ function Benefits() {
             </li>
           </ul>
         </div>
-        <div className="flex w-[40%] bg-gray-300 h-[75%] rounded-lg"></div>
+        <div className="flex w-[0px] h-[0px] sm:w-[40%] sm:h-[75%] rounded-lg bg-gray-300"></div>
       </div>
     </section>
   );
