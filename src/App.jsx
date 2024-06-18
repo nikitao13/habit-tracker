@@ -5,12 +5,12 @@ import GetStarted from "./components/main/GetStarted";
 
 function App() {
   return (
-    <div className="wrapper w-full h-[100vh] bg-blue-100">
-      <div className="app-container max-w-[1024px] bg-white h-full w-full mx-auto">
+    <div className="wrapper w-full h-[100vh] bg-white">
+      <div className="app-container max-w-[1024px] bg-white h-auto w-full mx-auto">
         <MainHeader />
         <BuildHealthy />
-        <GetStarted />
       </div>
+      <GetStarted />
     </div>
   );
 }
