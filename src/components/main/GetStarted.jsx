@@ -7,7 +7,7 @@ function GetStarted() {
           <span className="underline decoration-purple-hbt">today!</span>
         </h1>
         <p className="text-sm sm:text-base tracking-wide">Get started now!</p>
-        <div className="flex items-center justify-center sm:w-[10rem] bg-white px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-500 hover:scale-105 hover:opacity-90 transition-all duration-400 ease-in-out hover:cursor-pointer">
+        <div className="flex items-center justify-center sm:w-[10rem] bg-white px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-500 hover:scale-105 hover:opacity-90 transition-all duration-300 ease-in-out hover:cursor-pointer">
           <h2 className="text-xs sm:text-base text-white tracking-tight">
             Register for free
           </h2>
