@@ -1,7 +1,7 @@
 function NewSection() {
   return (
     <section className="h-[50vh] w-full flex justify-center items-center bg-white">
-      <div className="w-1/2 flex flex-col items-center gap-8 text-center">
+      <div className="w-2/3 flex flex-col items-center gap-8 text-center">
         <h1 className="text-xl sm:text-4xl font-bold tracking-tight">
           Habitly habit tracker helps you to be your best, most productive self,
           a few points at a time. ✨

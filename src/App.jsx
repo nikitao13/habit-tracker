@@ -18,7 +18,6 @@ function App() {
         <NewSection />
       </div>
       <GetStarted />
-
       <div className="app-container max-w-[1600px] bg-white h-auto w-full mx-auto">
         <BuildHealthy />
         <MainFooter />
