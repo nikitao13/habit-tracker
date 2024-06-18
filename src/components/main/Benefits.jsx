@@ -1,7 +1,7 @@
 function Benefits() {
   return (
-    <section className="select-none antialiased flex items-center w-full h-[30vh] sm:h-[50vh] mx-auto justify-start pl-2 bg-gray-100">
-      <div className="flex justify-center items-center max-w-[1600px] w-[100%] gap-18 h-full px-4">
+    <section className="select-none antialiased flex items-center w-full h-[30vh] sm:h-[50vh] mx-auto pl-2 bg-gray-100">
+      <div className="flex justify-center items-center max-w-[1600px] w-[100%] gap-18 h-full px-4 mx-auto">
         <div className="flex flex-col w-3/4 text-left">
           <h1 className="underline decoration-purple-hbt text-xl sm:text-3xl font-bold tracking-tight mb-2 sm:mb-4">
             Why track habits?
