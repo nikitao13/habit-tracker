@@ -1,17 +1,17 @@
 function MainHeader() {
   const headerStyles = {
-    hover: "hover:opacity-70 transition-hover duration-300 ease-in-out"
+    hover: "hover:opacity-70 transition-hover duration-300 ease-in-out hover:text-blue-500"
   };
 
   const { hover } = headerStyles;
 
   return (
-    <header className="select-none antialiased flex items-center justify-between gap-10 px-2 sm:px-6 w-[100vw] sm:w-full h-[5vh] tracking-wide pt-2">
-      <h1 className="sm:text-4xl text-xl pr-1 font-extrabold tracking-tighter text-gradient">
+    <header className="select-none antialiased flex items-center justify-between px-2 sm:px-6 w-[100vw] sm:w-full h-[5vh] tracking-wide pt-4">
+      <h1 className={`sm:text-4xl text-xl pr-1 font-extrabold tracking-tighter text-gradient ${hover}`}>
         habitly
       </h1>
       <nav>
-        <ul className="flex gap-2 text-[0.60rem] sm:text-sm">
+        <ul className="flex gap-4 text-[0.60rem] sm:text-sm">
           <li>
             <a
               href="#"

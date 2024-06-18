@@ -1,7 +1,9 @@
 import "./styles/main.css";
 import MainHeader from "./components/header/MainHeader";
 import BuildHealthy from "./components/main/BuildHealthy";
+import Benefits from "./components/main/Benefits";
 import GetStarted from "./components/main/GetStarted";
+import NewSection from "./components/main/NewSection";
 import MainFooter from "./components/footer/MainFooter";
 
 function App() {
@@ -11,8 +13,14 @@ function App() {
         <MainHeader />
         <BuildHealthy />
       </div>
-      <GetStarted />
+      <Benefits />
       <div className="app-container max-w-[1600px] bg-white h-auto w-full mx-auto">
+        <NewSection />
+      </div>
+      <GetStarted />
+
+      <div className="app-container max-w-[1600px] bg-white h-auto w-full mx-auto">
+        <BuildHealthy />
         <MainFooter />
       </div>
     </div>
