@@ -7,6 +7,12 @@ const ReadOnlyRating = ({ skew = false }) => {
     <Box
       sx={{
         "& > legend": { mt: 2 },
+        "& .MuiRating-root": {
+          fontSize: {
+            xs: "1.2rem",
+            sm: "1.5rem",
+          },
+        },
       }}
       className={skew ? "skew-x-12" : ""}
     >

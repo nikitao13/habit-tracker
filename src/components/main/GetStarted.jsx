@@ -1,6 +1,6 @@
 function GetStarted() {
   return (
-    <section className="mx-auto flex h-[20vh] w-full select-none flex-col items-center justify-center antialiased sm:h-[30vh]">
+    <section className="mx-auto flex h-[32vh] w-full select-none flex-col items-center justify-center antialiased sm:h-[30vh]">
       <div className="flex flex-col items-center justify-center gap-4 sm:w-1/2 sm:gap-6">
         <h1 className="text-xl font-bold tracking-tight sm:text-4xl">
           Start tracking habits <span className="underline decoration-purple-hbt">today!</span>
