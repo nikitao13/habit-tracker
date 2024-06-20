@@ -11,7 +11,7 @@ function Reviews() {
   };
 
   return (
-    <section className="flex h-[27.5vh] w-full select-none flex-col bg-white sm:h-[25vh]">
+    <section className="flex h-[25vh] w-full select-none flex-col bg-white sm:h-[25vh]">
       <div className="flex justify-center gap-0 sm:gap-14">
         <div className={clientStyles.container}>
           <RiDoubleQuotesL className={clientStyles.icon} />
