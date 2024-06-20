@@ -9,7 +9,7 @@ function MainHeader() {
   const { hover, hoverGrow } = headerStyles;
 
   return (
-    <header className="flex h-[5vh] w-[100vw] select-none items-center justify-between px-2 pt-4 tracking-wide antialiased sm:w-full sm:px-6">
+    <header className="flex h-[5svh] w-[100vw] select-none items-center justify-between px-2 pt-4 tracking-wide antialiased sm:w-full sm:px-6">
       <h1
         className={`pr-1 text-xl font-extrabold tracking-tighter text-gradient sm:text-4xl ${hoverGrow}`}
       >

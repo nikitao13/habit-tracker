@@ -1,6 +1,6 @@
 function Benefits() {
   return (
-    <section className="mx-auto flex h-[32.5vh] w-full select-none items-center bg-gray-100 pl-2 antialiased sm:h-[55vh]">
+    <section className="mx-auto flex h-[32.5svh] w-full select-none items-center bg-white pl-2 antialiased sm:h-[55vh] sm:bg-gray-100">
       <div className="gap-18 mx-auto flex h-full w-[100%] max-w-[1600px] items-center justify-center px-1 sm:px-4">
         <div className="flex w-full flex-col text-left sm:w-3/4">
           <h1 className="mb-2 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:mb-4 sm:text-4xl">

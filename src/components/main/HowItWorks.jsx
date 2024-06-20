@@ -1,6 +1,6 @@
 function HowItWorks() {
   return (
-    <section className="mx-auto flex h-[65vh] w-full select-none flex-col bg-gray-100 px-4 py-4 antialiased sm:mt-0 sm:h-[45vh] sm:justify-center sm:py-0 sm:pb-0">
+    <section className="mx-auto flex h-[65vh] w-full select-none flex-col bg-white px-4 py-4 antialiased sm:mt-0 sm:h-[45vh] sm:justify-center sm:bg-gray-100 sm:py-0 sm:pb-0">
       <div className="mx-auto flex h-[50%] w-full max-w-[1600px] flex-col gap-4 px-0 sm:flex sm:flex-row sm:gap-0 sm:px-4">
         <>
           <ul className="flex w-full flex-col justify-center gap-2 text-[0.8rem] tracking-wide sm:w-1/2 sm:gap-4 sm:text-xl">

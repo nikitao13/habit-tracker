@@ -11,7 +11,7 @@ function Reviews() {
   };
 
   return (
-    <section className="flex h-[20vh] w-full select-none flex-col bg-white sm:h-[25vh]">
+    <section className="flex h-[20svh] w-full select-none flex-col bg-white sm:h-[25vh]">
       <div className="flex justify-center gap-0 sm:gap-14">
         <div className={clientStyles.container}>
           <RiDoubleQuotesL className={clientStyles.icon} />
@@ -31,16 +31,6 @@ function Reviews() {
           <ReadOnlyRating />
           <p className={clientStyles.place}>Five Dock</p>
         </div>
-        {/* <div className={clientStyles.container}>
-          <RiDoubleQuotesL className={clientStyles.icon} />
-          <h1 className={clientStyles.name}>John Smith</h1>
-          <p className={clientStyles.text}>
-            This is placeholder textThis is placeholder textThis is placeholder textThis is
-            placeholder text
-          </p>
-          <ReadOnlyRating />
-          <p className={clientStyles.place}>Ultimo</p>
-        </div> */}
       </div>
     </section>
   );
