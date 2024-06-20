@@ -15,14 +15,14 @@ function App() {
         <MainHeader />
         <BuildHealthy />
       </div>
+      <HowItWorks />
+      <div className="app-container mx-auto h-auto w-full max-w-[1600px] bg-white">
+        <GetStarted />
+      </div>
       <Benefits />
       <div className="app-container mx-auto h-auto w-full max-w-[1600px] bg-white">
         <CustomerFeedback />
         <Reviews />
-      </div>
-      <HowItWorks />
-      <div className="app-container mx-auto h-auto w-full max-w-[1600px] bg-white">
-        <GetStarted />
         <MainFooter />
       </div>
     </main>

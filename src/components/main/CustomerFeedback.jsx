@@ -1,6 +1,6 @@
 function CustomerFeedback() {
   return (
-    <section className="flex h-[25svh] w-full select-none items-center justify-center bg-white sm:h-[30vh]">
+    <section className="flex h-[25vh] w-full select-none items-center justify-center bg-white sm:h-[32vh]">
       <div className="flex w-full flex-col items-center gap-4 px-2 text-center sm:w-2/3 sm:gap-8 sm:px-0">
         <h1 className="text-xl font-bold tracking-tight sm:text-4xl">
           Habitly habit tracker helps you to be your best, most productive self, a few points at a
