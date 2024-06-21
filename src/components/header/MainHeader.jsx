@@ -1,4 +1,4 @@
-function MainHeader() {
+function MainHeader({ user, handleLogout, handleGoogle }) {
   const headerStyles = {
     hover:
       "hover:opacity-80 transition-hover duration-300 ease-in-out hover:text-gradient hover:font-bold",
@@ -22,11 +22,19 @@ function MainHeader() {
               About
             </a>
           </li>
-          <li>
-            <a href="#" className={hover}>
-              Login
-            </a>
-          </li>
+          {user ? (
+            <li>
+              <button onClick={handleLogout} className={hover}>
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <button onClick={handleGoogle} className={hover}>
+                Login
+              </button>
+            </li>
+          )}
           <li>
             <a href="#" className={hover}>
               Leaderboard

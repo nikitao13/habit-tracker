@@ -1,0 +1,81 @@
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const uri = process.env.VITE_MONGODB_URI;
+const client = new MongoClient(uri);
+
+async function connectDB() {
+  if (!client.isConnected) {
+    await client.connect();
+  }
+  return client.db("habitly-db").collection("users");
+}
+
+export async function createUser(uid, name, email) {
+  try {
+    const collection = await connectDB();
+    const newUser = {
+      uid: uid,
+      name: name,
+      email: email,
+      points: 0,
+      habitList: [],
+    };
+    const result = await collection.insertOne(newUser);
+    return result.ops[0];
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
+export async function getUserByUID(uid) {
+  try {
+    const collection = await connectDB();
+    const user = await collection.findOne({ uid: uid });
+    return user;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+}
+
+export async function checkUserAndFetchHabits(uid, name, email) {
+  try {
+    const collection = await connectDB();
+    let user = await collection.findOne({ uid: uid });
+
+    if (!user) {
+      user = await createUser(uid, name, email);
+    }
+
+    return user.habitList;
+  } catch (error) {
+    console.error("Error checking user and fetching habits:", error);
+    throw error;
+  }
+}
+
+export async function updateUser(uid, updateData) {
+  try {
+    const collection = await connectDB();
+    const result = await collection.updateOne({ uid: uid }, { $set: updateData });
+    return result.modifiedCount > 0;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+}
+
+export async function deleteUser(uid) {
+  try {
+    const collection = await connectDB();
+    const result = await collection.deleteOne({ uid: uid });
+    return result.deletedCount > 0;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+}
