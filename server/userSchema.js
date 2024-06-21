@@ -4,10 +4,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const uri = process.env.VITE_MONGODB_URI;
+
+if (!uri) {
+  console.error("MongoDB URI is not defined in the environment variables");
+}
+
 const client = new MongoClient(uri);
 
 async function connectDB() {
-  if (!client.isConnected) {
+  if (!client.topology?.isConnected()) {
     await client.connect();
   }
   return client.db("habitly-db").collection("users");
@@ -24,7 +29,10 @@ export async function createUser(uid, name, email) {
       habitList: [],
     };
     const result = await collection.insertOne(newUser);
-    return result.ops[0];
+    return {
+      _id: result.insertedId,
+      ...newUser,
+    };
   } catch (error) {
     console.error("Error creating user:", error);
     throw error;

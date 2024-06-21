@@ -1,5 +1,6 @@
 import express from "express";
 import pkg from "body-parser";
+import cors from "cors";
 import {
   createUser,
   getUserByUID,
@@ -13,6 +14,7 @@ const { json } = pkg;
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(json());
 
 app.post("/create-user", async (req, res) => {
