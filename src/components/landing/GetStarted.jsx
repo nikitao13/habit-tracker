@@ -8,9 +8,12 @@ function GetStarted({ handleGoogle }) {
         <p className="h-sm:text-lg text-sm font-semibold tracking-wide text-gradient sm:text-xl">
           Get started now!
         </p>
-        <button onClick={handleGoogle} className="h-sm:w-[10rem] flex items-center justify-center rounded-full bg-white bg-gradient-to-r from-blue-600 to-purple-500 px-4 py-2 transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:w-[11rem]">
+        <button
+          onClick={handleGoogle}
+          className="h-sm:w-[10rem] flex items-center justify-center rounded-full bg-white bg-gradient-to-r from-blue-600 to-purple-500 px-4 py-2 transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:w-[12rem]"
+        >
           <h2 className="h-sm:text-base text-xs tracking-tight text-white sm:text-lg">
-            Register for free
+            Sign in with Google
           </h2>
         </button>
       </div>

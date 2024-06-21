@@ -42,9 +42,12 @@ function MainHeader({ user, handleLogout, handleGoogle }) {
           </li>
         </ul>
       </nav>
-      <div className="transition-hover whitespace-nowrap rounded-full bg-white bg-gradient-to-r from-blue-600 to-purple-500 px-2 py-1.5 duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:px-4 sm:py-2">
+      <button
+        onClick={handleGoogle}
+        className="relative-group transition-hover whitespace-nowrap rounded-full bg-white bg-gradient-to-r from-blue-600 to-purple-500 px-2 py-1.5 duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:px-4 sm:py-2"
+      >
         <h2 className="text-[0.6rem] tracking-tight text-white sm:text-base">Get started</h2>
-      </div>
+      </button>
     </header>
   );
 }
