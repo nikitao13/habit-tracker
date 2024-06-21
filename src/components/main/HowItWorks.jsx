@@ -1,10 +1,10 @@
 function HowItWorks() {
   return (
-    <section className="mx-auto flex h-[80svh] w-full select-none flex-col bg-white px-4 py-4 antialiased sm:mt-0 sm:h-[40vh] sm:justify-center sm:bg-gray-100 sm:py-0 sm:pb-0">
+    <section className="h-sm:h-[50vh] mx-auto flex h-[80svh] w-full select-none flex-col bg-white px-4 py-4 antialiased sm:mt-0 sm:h-[40vh] sm:justify-center sm:bg-gray-100 sm:py-0 sm:pb-0">
       <div className="mx-auto flex h-[50%] w-full max-w-[1600px] flex-col gap-4 px-0 sm:flex sm:flex-row sm:gap-0 sm:px-4">
         <>
-          <ul className="flex w-full flex-col justify-center gap-2 text-[0.8rem] tracking-wide sm:w-1/2 sm:gap-4 sm:text-xl">
-            <h1 className="mx-auto mt-2 h-auto w-full max-w-[1600px] justify-center px-0 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:mt-0 sm:text-4xl">
+          <ul className="h-sm:gap-2 h-sm:text-base flex w-full flex-col justify-center gap-2 text-[0.8rem] tracking-wide sm:w-1/2 sm:gap-4 sm:text-xl">
+            <h1 className="h-sm:text-3xl mx-auto mt-2 h-auto w-full max-w-[1600px] justify-center px-0 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:mt-0 sm:text-4xl">
               How it works:
             </h1>
             <li>
@@ -30,8 +30,8 @@ function HowItWorks() {
           </ul>
         </>
         <>
-          <ul className="flex w-full flex-col justify-center gap-3 text-[0.8rem] tracking-wide sm:w-1/2 sm:gap-4 sm:text-xl">
-            <h1 className="mx-auto mt-0 h-auto w-full max-w-[1600px] justify-center px-0 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:text-4xl">
+          <ul className="h-sm:gap-2 h-sm:text-base flex w-full flex-col justify-center gap-3 text-[0.8rem] tracking-wide sm:w-1/2 sm:gap-4 sm:text-xl">
+            <h1 className="h-sm:text-3xl mx-auto mt-0 h-auto w-full max-w-[1600px] justify-center px-0 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:text-4xl">
               Features:
             </h1>
             <li>
