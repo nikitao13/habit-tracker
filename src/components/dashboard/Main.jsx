@@ -118,12 +118,6 @@ function Main({ user }) {
           Add Habit
         </button>
         <button
-          onClick={() => setView("all")}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          All Habits
-        </button>
-        <button
           onClick={() => setView("pending")}
           className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
         >
@@ -134,6 +128,12 @@ function Main({ user }) {
           className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
         >
           Completed
+        </button>
+        <button
+          onClick={() => setView("all")}
+          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
+        >
+          All Habits
         </button>
       </div>
 
