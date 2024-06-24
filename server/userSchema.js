@@ -119,3 +119,17 @@ export async function deleteHabit(uid, habitId) {
     throw error;
   }
 }
+
+export async function completeHabit(uid, habitId) {
+  try {
+    const collection = await connectDB();
+    const result = await collection.updateOne(
+      { uid: uid, "habitList._id": habitId },
+      { $set: { "habitList.$.completed": true } }
+    );
+    return result.modifiedCount > 0;
+  } catch (error) {
+    console.error("Error completing habit:", error);
+    throw error;
+  }
+}

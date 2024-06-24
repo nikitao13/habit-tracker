@@ -25,7 +25,7 @@ export const fetchHabits = async (user) => {
   }
 };
 
-export const addHabit = async (user, habit) => {
+export const addHabit = async (habit) => {
   try {
     const idToken = await auth.currentUser.getIdToken(true);
     const response = await fetch("http://localhost:3000/api/habits", {
@@ -49,7 +49,7 @@ export const addHabit = async (user, habit) => {
   }
 };
 
-export const deleteHabit = async (user, habitId) => {
+export const deleteHabit = async (habitId) => {
   try {
     const idToken = await auth.currentUser.getIdToken(true);
     const response = await fetch(`http://localhost:3000/api/habits/${habitId}`, {
@@ -68,6 +68,30 @@ export const deleteHabit = async (user, habitId) => {
     return data.habitList;
   } catch (error) {
     console.error("Error deleting habit:", error);
+    throw error;
+  }
+};
+
+export const markHabitAsComplete = async (habitId) => {
+  try {
+    const idToken = await auth.currentUser.getIdToken(true);
+    const response = await fetch("http://localhost:3000/api/complete-habit", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ habitId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to complete habit");
+    }
+
+    const data = await response.json();
+    return data.habitList;
+  } catch (error) {
+    console.error("Error completing habit:", error);
     throw error;
   }
 };

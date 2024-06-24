@@ -13,6 +13,7 @@ import {
   checkUserAndFetchHabits,
   addHabit,
   deleteHabit,
+  completeHabit,
 } from "./userSchema.js";
 
 dotenv.config();
@@ -176,6 +177,37 @@ app.delete("/api/habits/:habitId", async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting habit:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/complete-habit", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const idToken = authHeader?.split("Bearer ")[1];
+
+    if (!idToken) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+    const { habitId } = req.body;
+
+    if (!habitId) {
+      return res.status(400).json({ error: "Missing habitId" });
+    }
+
+    const result = await completeHabit(uid, habitId);
+
+    if (result) {
+      const user = await getUserByUID(uid);
+      res.status(200).json({ habitList: user.habitList });
+    } else {
+      res.status(404).json({ error: "Habit not found or already completed" });
+    }
+  } catch (error) {
+    console.error("Server error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

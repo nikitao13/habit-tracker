@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchHabits, addHabit, deleteHabit } from "../../utils/apiService";
+import { fetchHabits, addHabit, deleteHabit, markHabitAsComplete } from "../../utils/apiService";
 import { FaCheck } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import HabitForm from "./HabitForm";
@@ -70,7 +70,19 @@ function Main({ user }) {
               <p>Duration: {habit.duration} minutes</p>
               <p>Status: {habit.completed ? "Completed" : "Pending"}</p>
               <div className="mb-4 flex gap-2">
-                <FaCheck className="text-xl text-green-600 hover:cursor-pointer" />
+                <FaCheck
+                  className={`text-xl ${habit.completed ? "text-gray-400" : "text-green-600 hover:cursor-pointer"}`}
+                  onClick={async () => {
+                    if (!habit.completed) {
+                      try {
+                        const updatedHabits = await markHabitAsComplete(habit._id);
+                        setHabits(updatedHabits);
+                      } catch (error) {
+                        console.error("Error marking habit as complete:", error);
+                      }
+                    }
+                  }}
+                />
                 <FaDeleteLeft
                   className="text-xl text-red-600 hover:cursor-pointer"
                   onClick={() => handleDeleteHabit(habit._id)}
