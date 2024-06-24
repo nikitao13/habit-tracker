@@ -11,7 +11,8 @@ import {
   updateUser,
   deleteUser,
   checkUserAndFetchHabits,
-  connectDB,
+  addHabit,
+  deleteHabit,
 } from "./userSchema.js";
 
 dotenv.config();
@@ -100,7 +101,6 @@ app.post("/login", async (req, res) => {
 app.get("/api/habits", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
-
     const idToken = authHeader?.split("Bearer ")[1];
 
     if (!idToken) {
@@ -108,9 +108,7 @@ app.get("/api/habits", async (req, res) => {
     }
 
     const decodedToken = await getAuth().verifyIdToken(idToken);
-
     const uid = decodedToken.uid;
-
     const user = await getUserByUID(uid);
 
     if (!user) {
@@ -131,7 +129,6 @@ app.get("/api/habits", async (req, res) => {
 app.post("/api/habits", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
-
     const idToken = authHeader?.split("Bearer ")[1];
 
     if (!idToken) {
@@ -139,15 +136,12 @@ app.post("/api/habits", async (req, res) => {
     }
 
     const decodedToken = await getAuth().verifyIdToken(idToken);
-
     const uid = decodedToken.uid;
-
     const { habit } = req.body;
 
-    const collection = await connectDB();
-    const result = await collection.updateOne({ uid: uid }, { $push: { habitList: habit } });
+    const result = await addHabit(uid, habit);
 
-    if (result.modifiedCount > 0) {
+    if (result) {
       const user = await getUserByUID(uid);
       res.status(200).json({ habitList: user.habitList });
     } else {
@@ -155,6 +149,33 @@ app.post("/api/habits", async (req, res) => {
     }
   } catch (error) {
     console.error("Error adding habit:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/api/habits/:habitId", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const idToken = authHeader?.split("Bearer ")[1];
+
+    if (!idToken) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+    const { habitId } = req.params;
+
+    const result = await deleteHabit(uid, habitId);
+
+    if (result) {
+      const user = await getUserByUID(uid);
+      res.status(200).json({ habitList: user.habitList });
+    } else {
+      res.status(404).json({ message: "Habit not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting habit:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

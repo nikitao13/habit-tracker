@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebase/config";
+import { FaCheck } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { v4 as uuidv4 } from "uuid";
 
 function Main({ user }) {
   const [habits, setHabits] = useState([]);
@@ -64,6 +67,28 @@ function Main({ user }) {
     }
   };
 
+  const deleteHabit = async (habit) => {
+    try {
+      const idToken = await auth.currentUser.getIdToken(true);
+      const response = await fetch(`http://localhost:3000/api/habits/${habit._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete habit");
+      }
+
+      const data = await response.json();
+      setHabits(data.habitList);
+    } catch (error) {
+      console.error("Error deleting habit:", error);
+    }
+  };
+
   const toggleAddState = () => {
     setAddState((prevState) => !prevState);
   };
@@ -71,6 +96,7 @@ function Main({ user }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const habit = {
+      _id: uuidv4(),
       name: newHabit.name,
       duration: parseInt(newHabit.duration, 10),
       completed: false,
@@ -90,17 +116,19 @@ function Main({ user }) {
     }));
   };
 
-  const filteredHabits = habits.filter((habit) => {
-    switch (view) {
-      case "pending":
-        return !habit.completed;
-      case "completed":
-        return habit.completed;
-      case "all":
-      default:
-        return true;
-    }
-  });
+  const filteredHabits = habits
+    .filter((habit) => {
+      switch (view) {
+        case "pending":
+          return !habit.completed;
+        case "completed":
+          return habit.completed;
+        case "all":
+        default:
+          return true;
+      }
+    })
+    .sort((a, b) => a.completed - b.completed);
 
   return (
     <section className="mx-auto mt-4 flex w-full max-w-[1600px] flex-grow flex-col bg-gray-100 p-6">
@@ -162,14 +190,21 @@ function Main({ user }) {
         </form>
       )}
 
-      <div className="mt-4 flex flex-col gap-2">
+      <div className="mt-4 flex max-w-fit flex-col gap-2">
         <h1 className="text-lg font-semibold">User's Habits:</h1>
         {filteredHabits.length > 0 ? (
           filteredHabits.map((habit, index) => (
-            <div key={index} className="">
+            <div key={index} className="w-full">
               <h2 className="font-semibold tracking-wider">{habit.name}</h2>
               <p>Duration: {habit.duration} minutes</p>
               <p>Status: {habit.completed ? "Completed" : "Pending"}</p>
+              <div className="mb-4 flex gap-2">
+                <FaCheck className="text-xl text-green-600 hover:cursor-pointer" />
+                <FaDeleteLeft
+                  className="text-xl text-red-600 hover:cursor-pointer"
+                  onClick={() => deleteHabit(habit)}
+                />
+              </div>
             </div>
           ))
         ) : (
