@@ -1,89 +1,38 @@
 import { useState, useEffect } from "react";
-import { auth } from "../../../firebase/config";
+import { fetchHabits, addHabit, deleteHabit } from "../../utils/apiService";
 import { FaCheck } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
-import { v4 as uuidv4 } from "uuid";
+import HabitForm from "./HabitForm";
+import Console from "./Console";
 
 function Main({ user }) {
   const [habits, setHabits] = useState([]);
   const [view, setView] = useState("all");
   const [addState, setAddState] = useState(false);
-  const [newHabit, setNewHabit] = useState({
-    name: "",
-    duration: "",
-  });
-
-  const fetchHabits = async () => {
-    if (!user) return;
-
-    try {
-      const idToken = await auth.currentUser.getIdToken(true);
-      const response = await fetch("http://localhost:3000/api/habits", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch habits");
-      }
-
-      const data = await response.json();
-      setHabits(data.habitList);
-    } catch (error) {
-      console.error("Error fetching habits:", error);
-    }
-  };
 
   useEffect(() => {
     if (user) {
-      fetchHabits();
+      (async () => {
+        const fetchedHabits = await fetchHabits(user);
+        setHabits(fetchedHabits);
+      })();
     }
   }, [user]);
 
-  const addHabit = async (habit) => {
+  const handleAddHabit = async (habit) => {
     try {
-      const idToken = await auth.currentUser.getIdToken(true);
-      const response = await fetch("http://localhost:3000/api/habits", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ habit }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add habit");
-      }
-
-      const data = await response.json();
-      setHabits(data.habitList);
+      const updatedHabits = await addHabit(user, habit);
+      setHabits(updatedHabits);
       setAddState(false);
     } catch (error) {
       console.error("Error adding habit:", error);
     }
   };
 
-  const deleteHabit = async (habit) => {
+  const handleDeleteHabit = async (habitId) => {
     try {
-      const idToken = await auth.currentUser.getIdToken(true);
-      const response = await fetch(`http://localhost:3000/api/habits/${habit._id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete habit");
-      }
-
-      const data = await response.json();
-      setHabits(data.habitList);
+      const updatedHabits = await deleteHabit(user, habitId);
+      setHabits(updatedHabits);
     } catch (error) {
       console.error("Error deleting habit:", error);
     }
@@ -91,29 +40,6 @@ function Main({ user }) {
 
   const toggleAddState = () => {
     setAddState((prevState) => !prevState);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const habit = {
-      _id: uuidv4(),
-      name: newHabit.name,
-      duration: parseInt(newHabit.duration, 10),
-      completed: false,
-    };
-    addHabit(habit);
-    setNewHabit({
-      name: "",
-      duration: "",
-    });
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewHabit((prevHabit) => ({
-      ...prevHabit,
-      [name]: value,
-    }));
   };
 
   const filteredHabits = habits
@@ -132,63 +58,8 @@ function Main({ user }) {
 
   return (
     <section className="mx-auto mt-4 flex w-full max-w-[1600px] flex-grow flex-col bg-gray-100 p-6">
-      <h1 className="text-xl font-semibold tracking-tight text-black/85">
-        Welcome, {user.displayName}!
-      </h1>
-      <h2>Total Points: 0</h2>
-      <h2>Habits Completed: 0</h2>
-      <h2>Daily Score: 0</h2>
-      <div className="mt-2 flex gap-4">
-        <button
-          onClick={toggleAddState}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          Add Habit
-        </button>
-        <button
-          onClick={() => setView("pending")}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setView("completed")}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          Completed
-        </button>
-        <button
-          onClick={() => setView("all")}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          All Habits
-        </button>
-      </div>
-
-      {addState && (
-        <form className="mt-4 flex w-[10rem] flex-col gap-2" onSubmit={handleFormSubmit}>
-          <input
-            name="name"
-            placeholder="Habit Name"
-            value={newHabit.name}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            name="duration"
-            placeholder="Duration"
-            value={newHabit.duration}
-            onChange={handleInputChange}
-            required
-          />
-          <button
-            type="submit"
-            className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-          >
-            Add Habit
-          </button>
-        </form>
-      )}
+      <Console user={user} toggleAddState={toggleAddState} setView={setView} />
+      {addState && <HabitForm onSubmit={handleAddHabit} />}
 
       <div className="mt-4 flex max-w-fit flex-col gap-2">
         <h1 className="text-lg font-semibold">User's Habits:</h1>
@@ -202,7 +73,7 @@ function Main({ user }) {
                 <FaCheck className="text-xl text-green-600 hover:cursor-pointer" />
                 <FaDeleteLeft
                   className="text-xl text-red-600 hover:cursor-pointer"
-                  onClick={() => deleteHabit(habit)}
+                  onClick={() => handleDeleteHabit(habit._id)}
                 />
               </div>
             </div>
