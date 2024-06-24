@@ -4,9 +4,11 @@ import LandingPage from "./components/landing/LandingPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
+import LoadingSkeleton from "./components/landing/LoadingSkeleton";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -37,6 +39,7 @@ function App() {
       } else {
         setUser(null);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -62,7 +65,9 @@ function App() {
 
   return (
     <main className="wrapper h-[100svh] w-full overflow-auto bg-white">
-      {user ? (
+      {loading ? (
+        <LoadingSkeleton />
+      ) : user ? (
         <Dashboard user={user} handleLogout={handleLogout} />
       ) : (
         <LandingPage handleGoogle={handleGoogle} />
