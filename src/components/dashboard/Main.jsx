@@ -9,19 +9,24 @@ function Main({ user }) {
   const [habits, setHabits] = useState([]);
   const [view, setView] = useState("all");
   const [addState, setAddState] = useState(false);
+  const [completedOrder, setCompletedOrder] = useState([]);
 
   useEffect(() => {
     if (user) {
       (async () => {
         const fetchedHabits = await fetchHabits(user);
         setHabits(fetchedHabits);
+        const initialCompletedOrder = fetchedHabits
+          .filter((habit) => habit.completed)
+          .map((habit) => habit._id);
+        setCompletedOrder(initialCompletedOrder);
       })();
     }
   }, [user]);
 
   const handleAddHabit = async (habit) => {
     try {
-      const updatedHabits = await addHabit(user, habit);
+      const updatedHabits = await addHabit(habit);
       setHabits(updatedHabits);
       setAddState(false);
     } catch (error) {
@@ -31,10 +36,20 @@ function Main({ user }) {
 
   const handleDeleteHabit = async (habitId) => {
     try {
-      const updatedHabits = await deleteHabit(user, habitId);
+      const updatedHabits = await deleteHabit(habitId);
       setHabits(updatedHabits);
     } catch (error) {
       console.error("Error deleting habit:", error);
+    }
+  };
+
+  const handleCompleteHabit = async (habitId) => {
+    try {
+      const updatedHabits = await markHabitAsComplete(habitId);
+      setHabits(updatedHabits);
+      setCompletedOrder([...completedOrder, habitId]);
+    } catch (error) {
+      console.error("Error marking habit as complete:", error);
     }
   };
 
@@ -54,10 +69,15 @@ function Main({ user }) {
           return true;
       }
     })
-    .sort((a, b) => a.completed - b.completed);
+    .sort((a, b) => {
+      if (a.completed && b.completed) {
+        return completedOrder.indexOf(b._id) - completedOrder.indexOf(a._id);
+      }
+      return a.completed - b.completed;
+    });
 
   return (
-    <section className="mx-auto mt-4 flex w-full max-w-[1600px] flex-grow flex-col bg-gray-100 p-6">
+    <section className="mx-auto mt-1 flex w-full max-w-[1600px] flex-grow flex-col bg-gray-100 p-6">
       <Console user={user} toggleAddState={toggleAddState} setView={setView} />
       {addState && <HabitForm onSubmit={handleAddHabit} />}
 
@@ -72,16 +92,7 @@ function Main({ user }) {
               <div className="mb-4 flex gap-2">
                 <FaCheck
                   className={`text-xl ${habit.completed ? "text-gray-400" : "text-green-600 hover:cursor-pointer"}`}
-                  onClick={async () => {
-                    if (!habit.completed) {
-                      try {
-                        const updatedHabits = await markHabitAsComplete(habit._id);
-                        setHabits(updatedHabits);
-                      } catch (error) {
-                        console.error("Error marking habit as complete:", error);
-                      }
-                    }
-                  }}
+                  onClick={() => !habit.completed && handleCompleteHabit(habit._id)}
                 />
                 <FaDeleteLeft
                   className="text-xl text-red-600 hover:cursor-pointer"
