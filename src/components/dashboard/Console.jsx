@@ -12,7 +12,13 @@ function Console({ user, toggleAddState, setView }) {
           onClick={toggleAddState}
           className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
         >
-          Add Habit
+          New Habit
+        </button>
+        <button
+          onClick={() => setView("all")}
+          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
+        >
+          All
         </button>
         <button
           onClick={() => setView("pending")}
@@ -20,17 +26,12 @@ function Console({ user, toggleAddState, setView }) {
         >
           Pending
         </button>
+
         <button
           onClick={() => setView("completed")}
           className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
         >
           Completed
-        </button>
-        <button
-          onClick={() => setView("all")}
-          className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
-        >
-          All Habits
         </button>
       </div>
     </>

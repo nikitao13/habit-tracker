@@ -112,7 +112,10 @@ function Main({ user }) {
       {addState && <HabitForm onSubmit={handleAddHabit} />}
       <div className="mt-4 flex max-w-fit flex-col gap-2">
         <h1 className="text-lg font-semibold">User's Habits:</h1>
-        {uncompletedHabits.length > 0 ? (
+        {(view === "all" || view === "pending") && uncompletedHabits.length === 0 && (
+          <h2>No pending habits. Add & complete habits to earn points!</h2>
+        )}
+        {uncompletedHabits.length > 0 &&
           uncompletedHabits.map((habit, index) => (
             <div key={index} className="w-full">
               <h2 className="font-semibold tracking-wider">{habit.name}</h2>
@@ -129,13 +132,9 @@ function Main({ user }) {
                 />
               </div>
             </div>
-          ))
-        ) : (
-          <h2>No uncompleted habits. Time to improve your habits!</h2>
-        )}
-        {completedHabits.length > 0 && (
+          ))}
+        {view !== "pending" && completedHabits.length > 0 && (
           <>
-            <h1 className="text-lg font-semibold">Completed Habits:</h1>
             {completedHabits.map((habit, index) => (
               <div key={index} className="w-full">
                 <h2 className="font-semibold tracking-wider">{habit.name}</h2>
