@@ -107,13 +107,13 @@ function Main({ user }) {
   const completedHabits = filteredHabits.filter((habit) => habit.completed);
 
   return (
-    <section className="mx-auto mt-1 flex w-full max-w-[1600px] flex-grow flex-col bg-gray-100 p-6">
+    <section className="mx-auto mt-0 flex w-full max-w-[1600px] h-[92vh] flex-col bg-white p-6">
       <Console user={user} toggleAddState={toggleAddState} setView={setView} />
       {addState && <HabitForm onSubmit={handleAddHabit} />}
       <div className="mt-4 flex max-w-fit flex-col gap-2">
         <h1 className="text-lg font-semibold">User's Habits:</h1>
         {(view === "all" || view === "pending") && uncompletedHabits.length === 0 && (
-          <h2>No pending habits. Add & complete habits to earn points!</h2>
+          <h2>No pending habits. Add & complete to earn points!</h2>
         )}
         {uncompletedHabits.length > 0 &&
           uncompletedHabits.map((habit, index) => (
