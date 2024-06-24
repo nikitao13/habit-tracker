@@ -4,7 +4,7 @@ import MainFooter from "../footer/MainFooter";
 
 function Dashboard({ user, handleLogout }) {
   return (
-    <div className="flex h-[100vh] w-full flex-col">
+    <div className="mx-auto h-auto w-full max-w-[1600px] bg-white">
       <MainHeader user={user} handleLogout={handleLogout} />
       <Main user={user} />
       <MainFooter />

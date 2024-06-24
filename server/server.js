@@ -1,13 +1,20 @@
 import express from "express";
 import pkg from "body-parser";
 import cors from "cors";
+import { initializeApp, cert } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
+import dotenv from "dotenv";
+import serviceAccount from "../firebase/habitly.json" assert { type: "json" };
 import {
   createUser,
   getUserByUID,
   updateUser,
   deleteUser,
   checkUserAndFetchHabits,
+  connectDB,
 } from "./userSchema.js";
+
+dotenv.config();
 
 const { json } = pkg;
 
@@ -16,6 +23,10 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(json());
+
+initializeApp({
+  credential: cert(serviceAccount),
+});
 
 app.post("/create-user", async (req, res) => {
   const { uid, name, email, points, habitList } = req.body;
@@ -71,13 +82,80 @@ app.delete("/delete-user/:uid", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { uid, name, email } = req.body;
+  const { idToken } = req.body;
+
+  if (!idToken) {
+    return res.status(400).json({ error: "ID token is required" });
+  }
 
   try {
-    const habitList = await checkUserAndFetchHabits(uid, name, email);
+    const habitList = await checkUserAndFetchHabits(idToken);
     res.status(200).json({ habitList });
   } catch (error) {
+    console.error("Error checking user and fetching habits:", error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/habits", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    const idToken = authHeader?.split("Bearer ")[1];
+
+    if (!idToken) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const uid = decodedToken.uid;
+
+    const user = await getUserByUID(uid);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ habitList: user.habitList });
+  } catch (error) {
+    console.error("Error fetching habits:", error);
+    if (error.code === "auth/id-token-expired") {
+      res.status(401).json({ error: "Token expired" });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
+app.post("/api/habits", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    const idToken = authHeader?.split("Bearer ")[1];
+
+    if (!idToken) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+
+    const uid = decodedToken.uid;
+
+    const { habit } = req.body;
+
+    const collection = await connectDB();
+    const result = await collection.updateOne({ uid: uid }, { $push: { habitList: habit } });
+
+    if (result.modifiedCount > 0) {
+      const user = await getUserByUID(uid);
+      res.status(200).json({ habitList: user.habitList });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error adding habit:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

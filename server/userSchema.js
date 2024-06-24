@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import { getAuth } from "firebase-admin/auth";
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ if (!uri) {
 
 const client = new MongoClient(uri);
 
-async function connectDB() {
+export async function connectDB() {
   if (!client.topology?.isConnected()) {
     await client.connect();
   }
@@ -50,12 +51,16 @@ export async function getUserByUID(uid) {
   }
 }
 
-export async function checkUserAndFetchHabits(uid, name, email) {
+export async function checkUserAndFetchHabits(idToken) {
   try {
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+
     const collection = await connectDB();
     let user = await collection.findOne({ uid: uid });
 
     if (!user) {
+      const { name, email } = decodedToken;
       user = await createUser(uid, name, email);
     }
 

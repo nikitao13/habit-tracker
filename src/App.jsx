@@ -9,7 +9,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         const filteredUser = {
           uid: currentUser.uid,
@@ -18,41 +18,34 @@ function App() {
           photoURL: currentUser.photoURL,
         };
         setUser(filteredUser);
+
+        const idToken = await currentUser.getIdToken(true);
+        try {
+          const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idToken }),
+          });
+
+          const data = await response.json();
+          console.log("User habits:", data.habitList);
+        } catch (error) {
+          console.error("Error during API call:", error);
+        }
       } else {
         setUser(null);
       }
     });
+
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    console.log("User state changed:", user);
-  }, [user]);
-
-  const handleGoogle = async (e) => {
+  const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      console.log(result.user);
-
-      fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: result.user.uid,
-          name: result.user.displayName,
-          email: result.user.email,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("User habits:", data.habitList);
-        })
-        .catch((error) => {
-          console.error("Error during API call:", error);
-        });
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.error(error);
     }

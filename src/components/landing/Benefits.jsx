@@ -1,12 +1,12 @@
 function Benefits() {
   return (
-    <section className="h-sm:h-[50vh] mx-auto flex h-[45vh] w-full select-none items-center bg-white pl-2 antialiased sm:h-[40vh] sm:bg-gray-100">
+    <section className="mx-auto flex h-[45vh] w-full select-none items-center bg-white pl-2 antialiased sm:h-[40vh] sm:bg-gray-100">
       <div className="gap-18 mx-auto flex h-full w-[100%] max-w-[1600px] items-center justify-center px-1 sm:px-4">
         <div className="flex w-full flex-col text-left sm:w-3/4">
-          <h1 className="h-sm:text-3xl mb-2 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:mb-4 sm:text-4xl">
+          <h1 className="mb-2 text-xl font-bold tracking-tight underline decoration-purple-hbt sm:mb-4 sm:text-4xl">
             Why track habits?
           </h1>
-          <ul className="h-sm:text-lg flex flex-col gap-3 text-sm tracking-wide sm:gap-4 sm:text-xl">
+          <ul className="flex flex-col gap-3 text-sm tracking-wide sm:gap-4 sm:text-xl">
             <li>
               Bring awareness to your daily activities and routines, helping you identify areas that
               need <span className="underline decoration-blue-hbt">improvement</span>. 👀
