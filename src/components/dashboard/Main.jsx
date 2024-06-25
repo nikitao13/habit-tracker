@@ -98,7 +98,7 @@ function Main({ user }) {
       case "completed":
         return habit.completed;
       case "all":
-      default:
+      default: 
         return true;
     }
   });
@@ -107,20 +107,20 @@ function Main({ user }) {
   const completedHabits = filteredHabits.filter((habit) => habit.completed);
 
   return (
-    <section className="mx-auto mt-0 flex w-full max-w-[1600px] h-[92vh] flex-col bg-white p-6">
+    <section className="mx-auto flex w-full max-w-[1600px] h-[92svh] flex-col bg-white p-4 pt-6 sm:p-6">
       <Console user={user} toggleAddState={toggleAddState} setView={setView} />
       {addState && <HabitForm onSubmit={handleAddHabit} />}
-      <div className="mt-4 flex max-w-fit flex-col gap-2">
-        <h1 className="text-lg font-semibold">User's Habits:</h1>
+      <div className="mt-4 flex max-w-fit flex-col gap-1 sm:gap-2">
+        <h1 className="text-base sm:text-lg font-semibold">User's Habits:</h1>
         {(view === "all" || view === "pending") && uncompletedHabits.length === 0 && (
           <h2>No pending habits. Add & complete to earn points!</h2>
         )}
         {uncompletedHabits.length > 0 &&
           uncompletedHabits.map((habit, index) => (
             <div key={index} className="w-full">
-              <h2 className="font-semibold tracking-wider">{habit.name}</h2>
-              <p>Duration: {habit.duration} minutes</p>
-              <p>Status: {habit.completed ? "Completed" : "Pending"}</p>
+              <h2 className="text-sm sm:text-base font-semibold tracking-wider">{habit.name}</h2>
+              <p className="text-sm sm:text-base">Duration: {habit.duration} minutes</p>
+              <p className="text-sm sm:text-base">Status: {habit.completed ? "Completed" : "Pending"}</p>
               <div className="mb-4 flex gap-2">
                 <FaCheck
                   className={`text-xl ${habit.completed ? "text-gray-400" : "text-green-600 hover:cursor-pointer"}`}
@@ -137,16 +137,16 @@ function Main({ user }) {
           <>
             {completedHabits.map((habit, index) => (
               <div key={index} className="w-full">
-                <h2 className="font-semibold tracking-wider">{habit.name}</h2>
-                <p>Duration: {habit.duration} minutes</p>
-                <p>Status: {habit.completed ? "Completed" : "Pending"}</p>
+                <h2 className="text-sm sm:text-base font-semibold tracking-wider">{habit.name}</h2>
+                <p className="text-sm sm:text-base">Duration: {habit.duration} minutes</p>
+                <p className="text-sm sm:text-base">Status: {habit.completed ? "Completed" : "Pending"}</p>
                 <div className="mb-4 flex gap-2">
                   <FaCheck
-                    className={`text-xl ${habit.completed ? "text-gray-400" : "text-green-600 hover:cursor-pointer"}`}
+                    className={`text-lg sm:text-xl ${habit.completed ? "text-gray-400" : "text-green-600 hover:cursor-pointer"}`}
                     onClick={() => !habit.completed && handleCompleteHabit(habit._id)}
                   />
                   <FaDeleteLeft
-                    className="text-xl text-red-600 hover:cursor-pointer"
+                    className="text-lg sm:text-xl text-red-600 hover:cursor-pointer"
                     onClick={() => handleDeleteHabit(habit._id)}
                   />
                 </div>

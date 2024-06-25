@@ -3,6 +3,7 @@ import pkg from "body-parser";
 import cors from "cors";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
+import { verifyToken } from "../utils/verifyToken";
 import dotenv from "dotenv";
 import serviceAccount from "../firebase/habitly.json" assert { type: "json" };
 import {
@@ -40,7 +41,7 @@ app.post("/create-user", async (req, res) => {
   }
 });
 
-app.get("/get-user/:uid", async (req, res) => {
+app.get("/get-user/:uid", verifyToken, async (req, res) => {
   const { uid } = req.params;
   try {
     const user = await getUserByUID(uid);
@@ -54,7 +55,7 @@ app.get("/get-user/:uid", async (req, res) => {
   }
 });
 
-app.put("/update-user/:uid", async (req, res) => {
+app.put("/update-user/:uid", verifyToken, async (req, res) => {
   const { uid } = req.params;
   const updateData = req.body;
   try {
@@ -69,7 +70,7 @@ app.put("/update-user/:uid", async (req, res) => {
   }
 });
 
-app.delete("/delete-user/:uid", async (req, res) => {
+app.delete("/delete-user/:uid", verifyToken, async (req, res) => {
   const { uid } = req.params;
   try {
     const deleted = await deleteUser(uid);
@@ -99,17 +100,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/api/habits", async (req, res) => {
+app.get("/api/habits", verifyToken, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    const idToken = authHeader?.split("Bearer ")[1];
-
-    if (!idToken) {
-      return res.status(401).json({ error: "No token provided" });
-    }
-
-    const decodedToken = await getAuth().verifyIdToken(idToken);
-    const uid = decodedToken.uid;
+    const uid = req.user.uid;
     const user = await getUserByUID(uid);
 
     if (!user) {
@@ -119,25 +112,13 @@ app.get("/api/habits", async (req, res) => {
     res.status(200).json({ habitList: user.habitList });
   } catch (error) {
     console.error("Error fetching habits:", error);
-    if (error.code === "auth/id-token-expired") {
-      res.status(401).json({ error: "Token expired" });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.post("/api/habits", async (req, res) => {
+app.post("/api/habits", verifyToken, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    const idToken = authHeader?.split("Bearer ")[1];
-
-    if (!idToken) {
-      return res.status(401).json({ error: "No token provided" });
-    }
-
-    const decodedToken = await getAuth().verifyIdToken(idToken);
-    const uid = decodedToken.uid;
+    const uid = req.user.uid;
     const { habit } = req.body;
 
     const result = await addHabit(uid, habit);
@@ -154,17 +135,9 @@ app.post("/api/habits", async (req, res) => {
   }
 });
 
-app.delete("/api/habits/:habitId", async (req, res) => {
+app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    const idToken = authHeader?.split("Bearer ")[1];
-
-    if (!idToken) {
-      return res.status(401).json({ error: "No token provided" });
-    }
-
-    const decodedToken = await getAuth().verifyIdToken(idToken);
-    const uid = decodedToken.uid;
+    const uid = req.uid;
     const { habitId } = req.params;
 
     const result = await deleteHabit(uid, habitId);
@@ -181,17 +154,9 @@ app.delete("/api/habits/:habitId", async (req, res) => {
   }
 });
 
-app.post("/api/complete-habit", async (req, res) => {
+app.post("/api/complete-habit", verifyToken, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    const idToken = authHeader?.split("Bearer ")[1];
-
-    if (!idToken) {
-      return res.status(401).json({ error: "No token provided" });
-    }
-
-    const decodedToken = await getAuth().verifyIdToken(idToken);
-    const uid = decodedToken.uid;
+    const uid = req.uid;
     const { habitId } = req.body;
 
     if (!habitId) {

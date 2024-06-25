@@ -3,7 +3,7 @@ import { FaGithub } from "react-icons/fa";
 
 function MainFooter() {
   return (
-    <footer className="item-center flex h-[5vh] justify-center px-2 py-0 text-[0.7rem] sm:h-[3vh] sm:text-base">
+    <footer className="item-center flex h-[3vh] justify-center px-2 py-0 text-[0.7rem] sm:h-[3vh] sm:text-base">
       <div className="flex h-full w-[100%] items-center justify-start gap-2">
         <p className="tracking-wider text-gradient">©2024 Nikitao13</p>
         <a href="https://github.com/nikitao13" rel="noopener noreferrer" target="_blank">

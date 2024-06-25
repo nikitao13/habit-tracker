@@ -33,8 +33,12 @@ const HabitForm = ({ onSubmit }) => {
   };
 
   return (
-    <form className="mt-4 flex w-[10rem] flex-col gap-2" onSubmit={handleFormSubmit}>
+    <form
+      className="mt-4 flex w-[8rem] flex-col gap-2 text-sm sm:w-[10rem]"
+      onSubmit={handleFormSubmit}
+    >
       <input
+        className="p-1"
         name="name"
         placeholder="Habit Name"
         value={newHabit.name}
@@ -42,6 +46,7 @@ const HabitForm = ({ onSubmit }) => {
         required
       />
       <input
+        className="p-1"
         name="duration"
         placeholder="Duration"
         value={newHabit.duration}
@@ -50,7 +55,7 @@ const HabitForm = ({ onSubmit }) => {
       />
       <button
         type="submit"
-        className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-sm font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90"
+        className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-xs font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:text-sm"
       >
         Add Habit
       </button>
