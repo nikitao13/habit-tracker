@@ -136,7 +136,7 @@ app.post("/api/habits", verifyToken, async (req, res) => {
 
 app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
   try {
-    const uid = req.uid;
+    const uid = req.user.uid;
     const { habitId } = req.params;
 
     const result = await deleteHabit(uid, habitId);
@@ -155,7 +155,7 @@ app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
 
 app.post("/api/complete-habit", verifyToken, async (req, res) => {
   try {
-    const uid = req.uid;
+    const uid = req.user.uid;
     const { habitId } = req.body;
 
     if (!habitId) {

@@ -109,11 +109,9 @@ export async function addHabit(uid, habit) {
 export async function deleteHabit(uid, habitId) {
   try {
     const collection = await connectDB();
-    const result = await collection.updateOne(
-      { uid: uid },
-      { $pull: { habitList: { _id: habitId } } }
-    );
-    return result.modifiedCount > 0;
+    await collection.updateOne({ uid: uid }, { $pull: { habitList: { _id: habitId } } });
+    const updatedUser = await collection.findOne({ uid: uid });
+    return updatedUser.habitList;
   } catch (error) {
     console.error("Error deleting habit:", error);
     throw error;
