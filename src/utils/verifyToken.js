@@ -1,6 +1,6 @@
 import { getAuth } from "firebase-admin/auth";
 
-export const verifyToken = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const idToken = authHeader?.split("Bearer ")[1];
@@ -21,3 +21,5 @@ export const verifyToken = async (req, res, next) => {
     }
   }
 };
+
+export default verifyToken;

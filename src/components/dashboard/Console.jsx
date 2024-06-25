@@ -7,7 +7,7 @@ function Console({ user, toggleAddState, setView }) {
       <h2 className="text-sm sm:text-base">Total Points: 1</h2>
       <h2 className="text-sm sm:text-base">Habits Completed: 0</h2>
       <h2 className="text-sm sm:text-base">Daily Score: 0</h2>
-      <div className="mt-4 flex gap-4 sm:mt-2">
+      <div className="mt-4 flex gap-2 sm:gap-4 sm:mt-2">
         <button
           onClick={toggleAddState}
           className="flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-purple-500 px-3 py-1 text-xs font-extralight text-white transition-all duration-300 ease-in-out hover:scale-105 hover:cursor-pointer hover:opacity-90 sm:text-sm"

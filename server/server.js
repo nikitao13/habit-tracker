@@ -2,8 +2,7 @@ import express from "express";
 import pkg from "body-parser";
 import cors from "cors";
 import { initializeApp, cert } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
-import { verifyToken } from "../utils/verifyToken";
+import verifyToken from "../src/utils/verifyToken.js";
 import dotenv from "dotenv";
 import serviceAccount from "../firebase/habitly.json" assert { type: "json" };
 import {
