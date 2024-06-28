@@ -13,17 +13,8 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        const filteredUser = {
-          uid: currentUser.uid,
-          name: currentUser.displayName || "",
-          email: currentUser.email || "",
-          points: 0,
-          habitList: [],
-        };
-
-        setUser(filteredUser);
         const idToken = await currentUser.getIdToken(true);
-        
+
         try {
           const response = await fetch("http://localhost:3000/login", {
             method: "POST",
@@ -34,7 +25,8 @@ function App() {
           });
 
           const data = await response.json();
-          console.log("User habits:", data.habitList);
+          setUser(data);
+          console.log("User data:", data);
         } catch (error) {
           console.error("Error during API call:", error);
         }

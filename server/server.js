@@ -60,7 +60,8 @@ app.put("/update-user/:uid", verifyToken, async (req, res) => {
   try {
     const updated = await updateUser(uid, updateData);
     if (updated) {
-      res.status(200).json({ message: "User updated" });
+      const user = await getUserByUID(uid);
+      res.status(200).json(user);
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -91,40 +92,40 @@ app.post("/login", async (req, res) => {
   }
 
   try {
-    const habitList = await checkUserAndFetchHabits(idToken);
-    res.status(200).json({ habitList });
+    const user = await checkUserAndFetchHabits(idToken);
+    res.status(200).json(user);
   } catch (error) {
     console.error("Error checking user and fetching habits:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-app.get("/api/habits", verifyToken, async (req, res) => {
+app.get("/api/habits/:uid", verifyToken, async (req, res) => {
+  const { uid } = req.params;
   try {
-    const uid = req.user.uid;
     const user = await getUserByUID(uid);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ habitList: user.habitList });
+    res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching habits:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.post("/api/habits", verifyToken, async (req, res) => {
-  try {
-    const uid = req.user.uid;
-    const { habit } = req.body;
+app.post("/api/habits/:uid", verifyToken, async (req, res) => {
+  const { uid } = req.params;
+  const { habit } = req.body;
 
+  try {
     const result = await addHabit(uid, habit);
 
     if (result) {
       const user = await getUserByUID(uid);
-      res.status(200).json({ habitList: user.habitList });
+      res.status(200).json(user);
     } else {
       res.status(404).json({ message: "User not found" });
     }
@@ -134,16 +135,15 @@ app.post("/api/habits", verifyToken, async (req, res) => {
   }
 });
 
-app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
-  try {
-    const uid = req.user.uid;
-    const { habitId } = req.params;
+app.delete("/api/habits/:uid/:habitId", verifyToken, async (req, res) => {
+  const { uid, habitId } = req.params;
 
+  try {
     const result = await deleteHabit(uid, habitId);
 
     if (result) {
       const user = await getUserByUID(uid);
-      res.status(200).json({ habitList: user.habitList });
+      res.status(200).json(user);
     } else {
       res.status(404).json({ message: "Habit not found" });
     }
@@ -153,20 +153,19 @@ app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
   }
 });
 
-app.post("/api/habits/complete/:habitId", verifyToken, async (req, res) => {
+app.post("/api/habits/complete/:uid/:habitId", verifyToken, async (req, res) => {
+  const { uid, habitId } = req.params;
+
+  if (!habitId) {
+    return res.status(400).json({ error: "Missing habitId" });
+  }
+
   try {
-    const uid = req.user.uid;
-    const { habitId } = req.params;
-
-    if (!habitId) {
-      return res.status(400).json({ error: "Missing habitId" });
-    }
-
     const result = await completeHabit(uid, habitId);
 
     if (result) {
       const user = await getUserByUID(uid);
-      res.status(200).json({ habitList: user.habitList });
+      res.status(200).json(user);
     } else {
       res.status(404).json({ error: "Habit not found or already completed" });
     }

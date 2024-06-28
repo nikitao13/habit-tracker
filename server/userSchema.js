@@ -57,15 +57,14 @@ export async function checkUserAndFetchHabits(idToken) {
     const decodedToken = await getAuth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    const collection = await connectDB();
-    let user = await collection.findOne({ uid: uid });
+    let user = await getUserByUID(uid);
 
     if (!user) {
       const { name, email } = decodedToken;
       user = await createUser(uid, name, email);
     }
 
-    return user.habitList;
+    return user;
   } catch (error) {
     console.error("Error checking user and fetching habits:", error);
     throw error;
