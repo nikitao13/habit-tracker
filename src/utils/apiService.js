@@ -75,13 +75,12 @@ export const deleteHabit = async (habitId) => {
 export const markHabitAsComplete = async (habitId) => {
   try {
     const idToken = await auth.currentUser.getIdToken(true);
-    const response = await fetch("http://localhost:3000/api/complete-habit", {
+    const response = await fetch(`http://localhost:3000/api/habits/complete/${habitId}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${idToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ habitId }),
     });
 
     if (!response.ok) {

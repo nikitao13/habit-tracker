@@ -15,13 +15,15 @@ function App() {
       if (currentUser) {
         const filteredUser = {
           uid: currentUser.uid,
-          displayName: currentUser.displayName,
-          email: currentUser.email,
-          photoURL: currentUser.photoURL,
+          name: currentUser.displayName || "",
+          email: currentUser.email || "",
+          points: 0,
+          habitList: [],
         };
-        setUser(filteredUser);
 
+        setUser(filteredUser);
         const idToken = await currentUser.getIdToken(true);
+        
         try {
           const response = await fetch("http://localhost:3000/login", {
             method: "POST",

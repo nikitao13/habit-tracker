@@ -153,10 +153,10 @@ app.delete("/api/habits/:habitId", verifyToken, async (req, res) => {
   }
 });
 
-app.post("/api/complete-habit", verifyToken, async (req, res) => {
+app.post("/api/habits/complete/:habitId", verifyToken, async (req, res) => {
   try {
     const uid = req.user.uid;
-    const { habitId } = req.body;
+    const { habitId } = req.params;
 
     if (!habitId) {
       return res.status(400).json({ error: "Missing habitId" });
