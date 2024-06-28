@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./styles/main.css";
 import LandingPage from "./components/landing/LandingPage";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -10,25 +10,38 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const refreshToken = useCallback(async () => {
+    if (auth.currentUser) {
+      const idToken = await auth.currentUser.getIdToken(true);
+      return idToken;
+    }
+    return null;
+  }, []);
+
+  const fetchUserData = useCallback(async (idToken) => {
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const data = await response.json();
+      setUser(data);
+      console.log("User data:", data);
+    } catch (error) {
+      console.error("Error during API call:", error);
+    }
+  }, []);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        const idToken = await currentUser.getIdToken(true);
-
-        try {
-          const response = await fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ idToken }),
-          });
-
-          const data = await response.json();
-          setUser(data);
-          console.log("User data:", data);
-        } catch (error) {
-          console.error("Error during API call:", error);
+        const idToken = await refreshToken();
+        if (idToken) {
+          await fetchUserData(idToken);
         }
       } else {
         setUser(null);
@@ -37,7 +50,23 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [refreshToken, fetchUserData]);
+
+  useEffect(() => {
+    if (user) {
+      const refreshInterval = setInterval(
+        async () => {
+          const newToken = await refreshToken();
+          if (newToken) {
+            await fetchUserData(newToken);
+          }
+        },
+        55 * 60 * 1000
+      );
+
+      return () => clearInterval(refreshInterval);
+    }
+  }, [user, refreshToken, fetchUserData]);
 
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
