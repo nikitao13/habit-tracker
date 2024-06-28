@@ -52,6 +52,7 @@ function App() {
     try {
       await signOut(auth);
       setUser(null);
+      localStorage.clear();
     } catch (error) {
       console.error("Error signing out:", error);
     }

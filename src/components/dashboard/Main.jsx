@@ -24,11 +24,15 @@ function Main({ user }) {
     }
   }, [user]);
 
+  const updateHabits = (newHabits) => {
+    setHabits(newHabits);
+    localStorage.setItem(`habits_${user.uid}`, JSON.stringify(newHabits));
+  };
+
   const fetchAndSetHabits = async () => {
     try {
       const fetchedUser = await fetchHabits(user.uid);
-      setHabits(fetchedUser.habitList);
-      localStorage.setItem(`habits_${user.uid}`, JSON.stringify(fetchedUser.habitList));
+      updateHabits(fetchedUser.habitList);
     } catch (error) {
       console.error("Error fetching habits:", error);
     } finally {
@@ -39,14 +43,12 @@ function Main({ user }) {
   const handleAddHabit = async (habit) => {
     const newHabit = { ...habit, createdAt: new Date().toISOString() };
     const newHabits = [...habits, newHabit];
-    setHabits(newHabits);
-    localStorage.setItem(`habits_${user.uid}`, JSON.stringify(newHabits));
+    updateHabits(newHabits);
     setAddState(false);
 
     try {
       const updatedUser = await addHabit(user.uid, newHabit);
-      setHabits(updatedUser.habitList);
-      localStorage.setItem(`habits_${user.uid}`, JSON.stringify(updatedUser.habitList));
+      updateHabits(updatedUser.habitList);
     } catch (error) {
       console.error("Error adding habit:", error);
       fetchAndSetHabits();
@@ -55,13 +57,11 @@ function Main({ user }) {
 
   const handleDeleteHabit = async (habitId) => {
     const newHabits = habits.filter((habit) => habit._id !== habitId);
-    setHabits(newHabits);
-    localStorage.setItem(`habits_${user.uid}`, JSON.stringify(newHabits));
+    updateHabits(newHabits);
 
     try {
       const updatedUser = await deleteHabit(user.uid, habitId);
-      setHabits(updatedUser.habitList);
-      localStorage.setItem(`habits_${user.uid}`, JSON.stringify(updatedUser.habitList));
+      updateHabits(updatedUser.habitList);
     } catch (error) {
       console.error("Error deleting habit:", error);
       fetchAndSetHabits();
@@ -74,13 +74,11 @@ function Main({ user }) {
         ? { ...habit, completed: true, completedAt: new Date().toISOString() }
         : habit
     );
-    setHabits(newHabits);
-    localStorage.setItem(`habits_${user.uid}`, JSON.stringify(newHabits));
+    updateHabits(newHabits);
 
     try {
       const updatedUser = await markHabitAsComplete(user.uid, habitId);
-      setHabits(updatedUser.habitList);
-      localStorage.setItem(`habits_${user.uid}`, JSON.stringify(updatedUser.habitList));
+      updateHabits(updatedUser.habitList);
     } catch (error) {
       console.error("Error marking habit as complete:", error);
       fetchAndSetHabits();
