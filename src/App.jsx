@@ -92,7 +92,7 @@ function App() {
       {loading ? (
         <LoadingSkeleton />
       ) : user ? (
-        <Dashboard user={user} handleLogout={handleLogout} />
+        <Dashboard user={user} handleLogout={handleLogout} setUser={setUser} />
       ) : (
         <LandingPage handleGoogle={handleGoogle} />
       )}

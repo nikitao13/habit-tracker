@@ -29,6 +29,7 @@ export async function createUser(uid, name, email) {
       email: email,
       points: 0,
       habitList: [],
+      habitsCompleted: 0,
     };
     const result = await collection.insertOne(newUser);
     return {
@@ -120,11 +121,23 @@ export async function deleteHabit(uid, habitId) {
 export async function completeHabit(uid, habitId) {
   try {
     const collection = await connectDB();
-    const result = await collection.updateOne(
+    const result = await collection.findOneAndUpdate(
       { uid: uid, "habitList._id": habitId },
-      { $set: { "habitList.$.completed": true } }
+      {
+        $set: { "habitList.$.completed": true },
+        $inc: { habitsCompleted: 1 },
+      },
+      { returnDocument: "after" }
     );
-    return result.modifiedCount > 0;
+
+    if (result.value) {
+      return {
+        success: true,
+        habitsCompleted: result.value.habitsCompleted,
+      };
+    } else {
+      return { success: false };
+    }
   } catch (error) {
     console.error("Error completing habit:", error);
     throw error;

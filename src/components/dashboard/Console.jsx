@@ -5,7 +5,7 @@ function Console({ user, toggleAddState, setView }) {
         Welcome, {user.name}!
       </h1>
       <h2 className="text-sm sm:text-base">Total Points: {user.points}</h2>
-      <h2 className="text-sm sm:text-base">Habits Completed: 0</h2>
+      <h2 className="text-sm sm:text-base">Habits Completed: {user.habitsCompleted}</h2>
       <h2 className="text-sm sm:text-base">Daily Score: 0</h2>
       <div className="mt-4 flex gap-2 sm:mt-2 sm:gap-4">
         <button

@@ -5,7 +5,7 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import HabitForm from "./HabitForm";
 import Console from "./Console";
 
-function Main({ user }) {
+function Main({ user, setUser }) {
   const [habits, setHabits] = useState([]);
   const [view, setView] = useState("all");
   const [addState, setAddState] = useState(false);
@@ -69,16 +69,10 @@ function Main({ user }) {
   };
 
   const handleCompleteHabit = async (habitId) => {
-    const newHabits = habits.map((habit) =>
-      habit._id === habitId
-        ? { ...habit, completed: true, completedAt: new Date().toISOString() }
-        : habit
-    );
-    updateHabits(newHabits);
-
     try {
       const updatedUser = await markHabitAsComplete(user.uid, habitId);
       updateHabits(updatedUser.habitList);
+      setUser(updatedUser); 
     } catch (error) {
       console.error("Error marking habit as complete:", error);
       fetchAndSetHabits();
